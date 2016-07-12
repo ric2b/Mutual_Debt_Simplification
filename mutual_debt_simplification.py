@@ -59,13 +59,11 @@ def draw_graph(debt_graph):
 
     if Digraph:
         viz = Digraph('Simplified Mutual Debt')
+        viz.node_attr.update(color='orangered', shape='box', style='rounded', penwidth='2')
         for participant in debt_graph:
             viz.node(participant)
             for debt in debt_graph[participant]:
                 viz.edge(participant, debt[0], xlabel=str(debt[1]))
-
-        viz.node_attr.update(color='orangered', shape='box', style='rounded', penwidth='2')
-        viz.edge_attr.update()
         viz.view()
     else:
         print(debt_graph)
@@ -73,22 +71,9 @@ def draw_graph(debt_graph):
 
 
 if __name__ == '__main__':
-    debts = [('D', 'R', 3.5),
-             ('D', 'S', 5),
-             ('D', 'P', 6),
-             ('R', 'D', 1),
-             ('R', 'N', 1),
-             ('R', 'P', 5),
-             ('P', 'S', 3),
-             ('P', 'N', 2),
-             ('S', 'D', 7),
-             ('S', 'D', 4),
-             ('S', 'R', 2),
-             ('S', 'N', 4),
-             ]
+    import json
+    debts = json.load(open('debt_list', 'r'))
 
-    names = {'D': 'David', 'R': 'Ricardo', 'P': 'Panda', 'N': 'Nuno', 'S': 'Sofia'}
-
-    initial_debt_graph = debt_list_to_graph(debts, names)
+    initial_debt_graph = debt_list_to_graph(debts['debt_list'], debts['names'])
     simplified_debt_graph = simplify_debt_graph(initial_debt_graph)
-    draw_graph(simplified_debt_graph)
+    draw_graph(initial_debt_graph)
