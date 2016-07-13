@@ -25,11 +25,11 @@ debts_empty = []
 
 class MutualDebtSimplificationTests(unittest.TestCase):
     def test_debt_list_to_graph(self):
-        self.assertEqual({'D': [('R', 3.5), ('S', 5), ('P', 6), ('R', -1), ('S', -7), ('S', -4)], 'P': [('D', -6), ('R', -5), ('S', 3), ('N', 2)], 'R': [('D', -3.5), ('D', 1), ('N', 1), ('P', 5), ('S', -2)], 'S': [('D', -5), ('P', -3), ('D', 7), ('D', 4), ('R', 2), ('N', 4)], 'N': [('R', -1), ('P', -2), ('S', -4)]},
+        self.assertEqual({'D': [('R', 3.5), ('S', 5), ('P', 6)], 'P': [('S', 3), ('N', 2)], 'R': [('D', 1), ('N', 1), ('P', 5)], 'S': [('D', 7), ('D', 4), ('R', 2), ('N', 4)], 'N': []},
                          debt_list_to_graph(debts).get_raw_data())
 
     def test_simplify_debt_graph(self):
-        self.assertEqual({'D': [('P', 2.5)], 'S': [('N', 7), ('P', 2)], 'R': [('P', 1.5)]},
+        self.assertEqual({'D': [('P', 2.5)], 'S': [('N', 7), ('P', 2)], 'R': [('P', 1.5)], 'P': [], 'N': []},
                          simplify_debt_graph(debt_list_to_graph(debts)).get_raw_data())
 
     def test_zero_sum(self):

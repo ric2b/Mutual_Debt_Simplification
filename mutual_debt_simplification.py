@@ -16,7 +16,6 @@ def debt_list_to_graph(debt_list: list, name_translation: dict = None) -> Graph:
         value = debt[2]
 
         debt_graph.edge(debtor, collector, value)
-        debt_graph.edge(collector, debtor, -value)
 
     return debt_graph
 
@@ -38,9 +37,12 @@ def collectors_and_debtors(debt_graph: Graph) -> (dict, dict):
     :param debt_graph:
     :return: dict of collectors, dict of debtors
     """
+
     collectors, debtors = {}, {}
     for participant in debt_graph:
-        total_owed = sum([value for collector, value in debt_graph.get_node_edges(participant)])
+        total_owed = sum([value for collector, value in debt_graph.get_node_edges(participant)])  # add the positive debt
+        total_owed -= sum([value for collector, value in debt_graph.get_node_reverse_edges(participant)])  # subtract the negative debt (credit)
+        
         if total_owed > 0:  # positive debt, is a debtor
             debtors[participant] = total_owed
         elif total_owed < 0:  # negative debt, is a collector
@@ -76,25 +78,30 @@ def graph_from_collectors_and_debtors(collectors: dict, debtors: dict) -> Graph:
 
 
 # # # Output # # #
-def draw_graph(debt_graph: Graph) -> None:
+def draw_graph(debt_graph: Graph, graph_name: str, open_file: bool = True) -> None:
     """
     Draw the graph in a pdf file or print it to the console (if graphviz isn't installed)
+    :param open_file:
+    :param graph_name:
     :param debt_graph:
     """
-    print(debt_graph)
+    print('%s: ' % graph_name, debt_graph)
     try:
         from graphviz import Digraph
     except ImportError:
         Digraph = None
 
     if Digraph:
-        viz = Digraph('Simplified Mutual Debt')
+        viz = Digraph(graph_name)
         viz.node_attr.update(color='orangered', shape='box', style='rounded', penwidth='2')
         for participant in debt_graph:
-            viz.node(participant)
-            for debt in debt_graph.get_node_edges(participant):
-                viz.edge(participant, debt[0], xlabel=str(debt[1]))
-        viz.view()
+            if debt_graph.get_node_edges(participant):
+                viz.node(participant)
+                for debt in debt_graph.get_node_edges(participant):
+                    viz.edge(participant, debt[0], xlabel=str(debt[1]))
+        
+        viz.view() if open_file else viz.render()
+        print('Render saved as %s.gv.pdf' % graph_name)
     else:
         print('(Please install graphviz for a much cleaner visualization of the graph)')
 
@@ -104,5 +111,6 @@ if __name__ == '__main__':
     debts = json.load(open('debt_list', 'r'))
 
     initial_debt_graph = debt_list_to_graph(debts['debt_list'], debts['names'])
+    draw_graph(initial_debt_graph, 'Initial_Mutual_Debt', open_file=False)
     simplified_debt_graph = simplify_debt_graph(initial_debt_graph)
-    draw_graph(simplified_debt_graph)
+    draw_graph(simplified_debt_graph, 'Simplified_Mutual_Debt')
