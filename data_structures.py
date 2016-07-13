@@ -38,3 +38,6 @@ class Graph:
 
     def __repr__(self):
         return self.g.__repr__()
+
+    def __len__(self):
+        return len(self.g)

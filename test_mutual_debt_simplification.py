@@ -20,6 +20,12 @@ debts_zeroed = [('A', 'B', 1),
                 ('C', 'A', 1)
                 ]
 
+debts_all = [('ALL', 'B', 6),
+             ('B', 'C',  1),
+             ('C', 'A', 1),
+             ('A', 'C', 3)
+             ]
+
 debts_empty = []
 
 
@@ -29,11 +35,14 @@ class MutualDebtSimplificationTests(unittest.TestCase):
                          debt_list_to_graph(debts).get_raw_data())
 
     def test_simplify_debt_graph(self):
-        self.assertEqual({'D': [('P', 2.5)], 'S': [('N', 7), ('P', 2)], 'R': [('P', 1.5)], 'P': [], 'N': []},
+        self.assertEqual({'D': [('N', 2.5)], 'S': [('N', 3), ('P', 6)], 'R': [('N', 1.5)], 'P': [], 'N': []},
                          simplify_debt_graph(debt_list_to_graph(debts)).get_raw_data())
 
     def test_zero_sum(self):
         self.assertEqual({}, simplify_debt_graph(debt_list_to_graph(debts_zeroed)).get_raw_data())
+
+    def test_feature_all(self):
+        self.assertEqual({'A': [('B', 3), ('C', 1)], 'B': [], 'C': []}, simplify_debt_graph(debt_list_to_graph(debts_all)).get_raw_data())
 
     def test_empty(self):
         self.assertEqual({}, simplify_debt_graph(debt_list_to_graph(debts_empty)).get_raw_data())

@@ -9,13 +9,27 @@ def debt_list_to_graph(debt_list: list, name_translation: dict = None) -> Graph:
     :param name_translation: Optional: A dictionary that maps full length names to the names used in the debt_list
     :return: the debt_graph described by the debt_list
     """
+    universal_debts = []
+
     debt_graph = Graph()
     for debt in debt_list:
-        debtor = name_translation[debt[0]] if name_translation else debt[0]
         collector = name_translation[debt[1]] if name_translation else debt[1]
         value = debt[2]
 
-        debt_graph.edge(debtor, collector, value)
+        if debt[0] == 'ALL':
+            universal_debts.append((collector, value))
+            print('WARNING: one of the debtors is named "ALL", this is a keyword that will divide '
+                  'the corresponding debt by all participants to the corresponding creditor')
+            continue
+        else:
+            debtor = name_translation[debt[0]] if name_translation else debt[0]
+            debt_graph.edge(debtor, collector, value)
+
+    for debt in universal_debts:
+        creditor, value = debt[0], debt[1]
+        for participant in debt_graph:
+            if participant != creditor:
+                debt_graph.edge(participant, creditor, value/len(debt_graph))
 
     return debt_graph
 
@@ -59,8 +73,8 @@ def graph_from_collectors_and_debtors(collectors: dict, debtors: dict) -> Graph:
     :return: the simplified graph
     """
     debt_graph = Graph()
-    for collector in sorted(collectors):  # from biggest collector (negative numbers, no need to reverse)
-        for debtor in sorted(debtors, reverse=True):  # from biggest debtor
+    for collector in sorted(collectors):  # from biggest collector
+        for debtor in sorted(debtors):  # from biggest debtor
             credit, debt = collectors[collector], debtors[debtor]
 
             if credit != 0 and debt != 0:
@@ -68,7 +82,7 @@ def graph_from_collectors_and_debtors(collectors: dict, debtors: dict) -> Graph:
                 debt_graph.edge(debtor, collector, transaction_value)
 
                 if credit >= debt:
-                    collectors[collector] += debt
+                    collectors[collector] -= debt
                     debtors[debtor] = 0
                 else:
                     collectors[collector] = 0
@@ -92,13 +106,15 @@ def draw_graph(debt_graph: Graph, graph_name: str, open_file: bool = True) -> No
         Digraph = None
 
     if Digraph:
-        viz = Digraph(graph_name)
+        viz = Digraph(graph_name, engine='circo')
         viz.node_attr.update(color='orangered', shape='box', style='rounded', penwidth='2')
+        viz.edge_attr.update(color='grey')
         for participant in debt_graph:
             if debt_graph.get_node_edges(participant):
                 viz.node(participant)
                 for debt in debt_graph.get_node_edges(participant):
-                    viz.edge(participant, debt[0], xlabel=str(debt[1]))
+                    if debt[1] != 0:
+                        viz.edge(participant, debt[0], xlabel=str(debt[1])[:5])
         
         viz.view() if open_file else viz.render()
         print('Render saved as %s.gv.pdf' % graph_name)
