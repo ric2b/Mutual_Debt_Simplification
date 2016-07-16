@@ -16,11 +16,16 @@ def debt_list_to_graph(debt_list: list, name_translation: dict = None) -> Graph:
         collector = name_translation[debt[1]] if name_translation else debt[1]
         value = debt[2]
 
-        if debt[0] == 'ALL':
+        if type(debt[0]) == list:
+            individual_value = value / len(debt[0])
+            for debtor in debt[0]:
+                debtor_name = name_translation[debtor] if name_translation else debtor
+                debt_graph.edge(debtor_name, collector, individual_value)
+
+        elif debt[0] == 'ALL':
             universal_debts.append((collector, value))
             print('WARNING: one of the debtors is named "ALL", this is a keyword that will divide '
                   'the corresponding debt by all participants to the corresponding creditor')
-            continue
         else:
             debtor = name_translation[debt[0]] if name_translation else debt[0]
             debt_graph.edge(debtor, collector, value)
