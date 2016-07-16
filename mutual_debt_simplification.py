@@ -2,39 +2,33 @@ from data_structures import Graph
 
 
 # # # Input # # #
-def debt_list_to_graph(debt_list: list, name_translation: dict = None) -> Graph:
+def debt_list_to_graph(debt_list: list, names: dict) -> Graph:
     """
     Make a graph from a list of debts
     :param debt_list: A list of 3 element lists or tuples with (str:debtor, str:collector, float:debt_value)
-    :param name_translation: Optional: A dictionary that maps full length names to the names used in the debt_list
+    :param names: A dictionary that maps full length names to the names used in the debt_list
     :return: the debt_graph described by the debt_list
     """
     universal_debts = []
 
     debt_graph = Graph()
     for debt in debt_list:
-        collector = name_translation[debt[1]] if name_translation else debt[1]
+        number_people = len(names)
+        collector = names[debt[1]]
         value = debt[2]
 
         if type(debt[0]) == list:
             individual_value = value / len(debt[0])
             for debtor in debt[0]:
-                debtor_name = name_translation[debtor] if name_translation else debtor
-                debt_graph.edge(debtor_name, collector, individual_value)
-
+                    debt_graph.edge(names[debtor], collector, individual_value)
         elif debt[0] == 'ALL':
-            universal_debts.append((collector, value))
+            individual_value = value / number_people
+            for debtor_name in names:
+                    debt_graph.edge(debtor_name, collector, individual_value)
             print('WARNING: one of the debtors is named "ALL", this is a keyword that will divide '
                   'the corresponding debt by all participants to the corresponding creditor')
         else:
-            debtor = name_translation[debt[0]] if name_translation else debt[0]
-            debt_graph.edge(debtor, collector, value)
-
-    for debt in universal_debts:
-        creditor, value = debt[0], debt[1]
-        for participant in debt_graph:
-            if participant != creditor:
-                debt_graph.edge(participant, creditor, value/len(debt_graph))
+            debt_graph.edge(names[debt[0]], collector, value)
 
     return debt_graph
 
