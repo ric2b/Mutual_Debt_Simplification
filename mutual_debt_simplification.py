@@ -123,7 +123,7 @@ def draw_graph(debt_graph: Graph, graph_name: str, open_file: bool = True) -> No
 
 if __name__ == '__main__':
     import json
-    debts = json.load(open('debt_list', 'r'))
+    debts = json.load(open('debt_list.json', 'r'))
 
     initial_debt_graph = debt_list_to_graph(debts['debt_list'], debts['names'])
     draw_graph(initial_debt_graph, 'Initial_Mutual_Debt', open_file=False)
