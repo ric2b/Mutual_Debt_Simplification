@@ -105,7 +105,7 @@ def draw_graph(debt_graph: Graph, graph_name: str, open_file: bool = True) -> No
         Digraph = None
 
     if Digraph:
-        viz = Digraph(graph_name, engine='circo')
+        viz = Digraph(graph_name) #, engine='circo') # Use this engine if the graph is hard to read
         viz.node_attr.update(color='orangered', shape='box', style='rounded', penwidth='2')
         viz.edge_attr.update(color='grey')
         for participant in debt_graph:
