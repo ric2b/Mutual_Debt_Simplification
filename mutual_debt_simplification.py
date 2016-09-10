@@ -1,4 +1,4 @@
-from data_structures import Graph
+from Mutual_Debt_Simplification.data_structures import Graph
 
 
 # # # Input # # #
