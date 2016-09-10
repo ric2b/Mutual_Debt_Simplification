@@ -7,6 +7,6 @@ In a group of people with debt between themselves, this program finds the absolu
 1. edit the `debt_list.json` file as needed
 2. run `python mutual_debt_simplification.py`
 
-![Solution example](MutualDebt.gv.png)   ![Solution example](SimplifiedMutualDebt.gv.png)
+![Solution example](media/MutualDebt.gv.png) ![Arrow](media/right_arrow.png) ![Solution example](media/SimplifiedMutualDebt.gv.png)
 
 Any feedback or contribution is appreciated :)
