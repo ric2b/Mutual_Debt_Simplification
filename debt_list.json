@@ -3,7 +3,7 @@
            "S": "Sofia",
            "N": "Nuno",
            "P": "Panda"},
- "debt_list": [["D", "R", 3.5],
+ "debt_list": [["D", "R", 3.5, "Short Description"],
                ["D", "S", 5],
                ["D", "P", 6],
                ["R", "D", 1],
