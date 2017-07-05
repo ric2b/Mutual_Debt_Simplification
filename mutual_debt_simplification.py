@@ -1,5 +1,6 @@
 from Mutual_Debt_Simplification.data_structures import Graph
 
+MIN_DISPLAY_VALUE = 0.01  # debts smaller than this value will be ommited from generated graphs
 
 # # # Input # # #
 def debt_list_to_graph(debt_list: list, names: dict) -> Graph:
@@ -112,8 +113,8 @@ def draw_graph(debt_graph: Graph, graph_name: str, open_file: bool = True) -> No
             if debt_graph.get_node_edges(participant):
                 viz.node(participant)
                 for debt in debt_graph.get_node_edges(participant):
-                    if debt[1] != 0:
-                        viz.edge(participant, debt[0], xlabel=str(debt[1])[:5])
+                    if debt[1] >= MIN_DISPLAY_VALUE:
+                        viz.edge(participant, debt[0], xlabel='{:.2f}'.format(debt[1]))
         
         viz.view() if open_file else viz.render()
         print('Render saved as %s.gv.pdf' % graph_name)
