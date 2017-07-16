@@ -111,7 +111,6 @@ def draw_graph(debt_graph: Graph, graph_name: str, open_file: bool = True) -> No
         viz.edge_attr.update(color='grey')
         for participant in debt_graph:
             if debt_graph.get_node_edges(participant):
-                viz.node(participant)
                 for debt in debt_graph.get_node_edges(participant):
                     if debt[1] >= MIN_DISPLAY_VALUE:
                         viz.edge(participant, debt[0], xlabel='{:.2f}'.format(debt[1]))
