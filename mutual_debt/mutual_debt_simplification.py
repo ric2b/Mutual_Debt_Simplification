@@ -57,7 +57,7 @@ def collectors_and_debtors(debt_graph: Graph) -> (dict, dict):
     for participant in debt_graph:
         total_owed = sum([value for collector, value in debt_graph.get_node_edges(participant)])  # add the positive debt
         total_owed -= sum([value for collector, value in debt_graph.get_node_reverse_edges(participant)])  # subtract the negative debt (credit)
-        
+
         if total_owed > 0:  # positive debt, is a debtor
             debtors[participant] = total_owed
         elif total_owed < 0:  # negative debt, is a collector
@@ -115,18 +115,10 @@ def draw_graph(debt_graph: Graph, graph_name: str, open_file: bool = True) -> No
                 for debt in debt_graph.get_node_edges(participant):
                     if debt[1] >= MIN_DISPLAY_VALUE:
                         viz.edge(participant, debt[0], xlabel='{:.2f}'.format(debt[1]))
-        
+
         viz.view() if open_file else viz.render()
         print('Render saved as %s.gv.pdf' % graph_name)
     else:
         print('(Please install graphviz for a much cleaner visualization of the graph)')
 
 
-if __name__ == '__main__':
-    import json
-    debts = json.load(open('debt_list.json', 'r'))
-
-    initial_debt_graph = debt_list_to_graph(debts['debt_list'], debts['names'])
-    draw_graph(initial_debt_graph, 'Initial_Mutual_Debt', open_file=False)
-    simplified_debt_graph = simplify_debt_graph(initial_debt_graph)
-    draw_graph(simplified_debt_graph, 'Simplified_Mutual_Debt')
