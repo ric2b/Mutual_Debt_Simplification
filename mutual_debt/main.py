@@ -1,5 +1,4 @@
-"""
-Mutual debt Simplification
+"""Mutual Debt Simplification
 
 Usage:
   simplify-debts <data_file>
@@ -7,12 +6,9 @@ Usage:
 
 Options:
   -h --help     Show this screen.
-
 """
 import json
 import sys
-
-from docopt import docopt
 
 from mutual_debt.mutual_debt_simplification import debt_list_to_graph, \
     simplify_debt_graph, draw_graph
@@ -24,8 +20,16 @@ def print_error(*args, sep=' ', end='\n'):
 
 
 def main():
-    args = docopt(__doc__)
-    data_file = args['<data_file>']
+
+    if len(sys.argv) != 2:
+        print(__doc__)
+        sys.exit(1)
+
+    if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+        print(__doc__)
+        return
+
+    data_file = sys.argv[1]
 
     # Try to load debts from data file
     # On failure: show error and exit using error code
