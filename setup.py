@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='mutual-debt-simplifier',
+    name='simplify-debts',
     version='1.0',
     description='Tool to perform mutual debt simplification',
     url='https://github.com/ric2b/Mutual_Debt_Simplification',
