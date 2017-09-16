@@ -1,4 +1,4 @@
-from mutual_debt.data_structures import Graph
+from mutual_debt.graph import Graph
 
 MIN_DISPLAY_VALUE = 0.01  # debts smaller than this value will be ommited from generated graphs
 
