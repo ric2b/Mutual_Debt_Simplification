@@ -1,7 +1,7 @@
 """Mutual Debt Simplification
 
 Usage:
-  simplify-debts <data_file>
+  simplify-debts [ <data_file> ]
   simplify-debts (-h | --help)
 
 Options:
@@ -19,17 +19,24 @@ def print_error(*args, sep=' ', end='\n'):
     print("ERROR:", *args, sep, end, file=sys.stderr)
 
 
+DEFAULT_DATA_FILE = 'debts.json'
+
+
 def main():
 
-    if len(sys.argv) != 2:
+    if len(sys.argv) > 2:
         print(__doc__)
         sys.exit(1)
 
-    if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-        print(__doc__)
-        return
-
-    data_file = sys.argv[1]
+    if len(sys.argv) == 1:
+        print("INFO: using default data file `%s`" % DEFAULT_DATA_FILE)
+        data_file = DEFAULT_DATA_FILE
+    else:
+        if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+            print(__doc__)
+            return
+        else:
+            data_file = sys.argv[1]
 
     # Try to load debts from data file
     # On failure: show error and exit using error code
