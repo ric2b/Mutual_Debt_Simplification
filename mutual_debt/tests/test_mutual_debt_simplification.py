@@ -1,6 +1,6 @@
 import unittest
 
-from mutual_debt.mutual_debt_simplification import simplify_debt_graph, \
+from mutual_debt.simplification import simplify_debt_graph, \
     debt_list_to_graph
 
 test_names = {'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E'}

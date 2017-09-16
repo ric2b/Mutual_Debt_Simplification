@@ -5,7 +5,7 @@ In a group of people with debt between themselves, this program finds the absolu
 ### To run:
 0. (Optional) Install graphviz: `pip install graphviz`
 1. edit the `debt_list.json` file as needed
-2. run `python mutual_debt_simplification.py`
+2. run `python main.py`
 
 ![Solution example](examples/media/MutualDebt.gv.png) ![Arrow](examples/media/right_arrow.png) ![Solution example](examples/media/SimplifiedMutualDebt.gv.png)
 

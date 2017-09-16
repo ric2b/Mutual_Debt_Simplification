@@ -10,7 +10,7 @@ Options:
 import json
 import sys
 
-from mutual_debt.mutual_debt_simplification import debt_list_to_graph, \
+from mutual_debt.simplification import debt_list_to_graph, \
     simplify_debt_graph, draw_graph
 
 
