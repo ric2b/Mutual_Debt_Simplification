@@ -28,9 +28,9 @@ DEFAULT_DATA_FILE = 'debts.json'
 def main():
     args = docopt(__doc__)
     data_file = args['<data_file>']
-    open_file = args['--auto-open']
+    auto_open = args['--auto-open']
 
-    print(open_file)
+    print(auto_open)
 
     if not data_file:
         print("INFO: using default data file `%s`" % DEFAULT_DATA_FILE)
@@ -47,9 +47,9 @@ def main():
         sys.exit(1)
 
     initial_debt_graph = debt_list_to_graph(debts['debt_list'], debts['names'])
-    draw_graph(initial_debt_graph, 'Initial_Mutual_Debt', open_file=open_file)
+    draw_graph(initial_debt_graph, 'Initial_Mutual_Debt', auto_open)
     simplified_debt_graph = simplify_debt_graph(initial_debt_graph)
-    draw_graph(simplified_debt_graph, 'Simplified_Mutual_Debt')
+    draw_graph(simplified_debt_graph, 'Simplified_Mutual_Debt', auto_open)
 
 
 if __name__ == '__main__':
