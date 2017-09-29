@@ -30,8 +30,6 @@ def main():
     data_file = args['<data_file>']
     auto_open = args['--auto-open']
 
-    print(auto_open)
-
     if not data_file:
         print("INFO: using default data file `%s`" % DEFAULT_DATA_FILE)
         data_file = DEFAULT_DATA_FILE
