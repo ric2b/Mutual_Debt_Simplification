@@ -1,11 +1,12 @@
 """Mutual Debt Simplification
 
 Usage:
-  simplify-debts [ <data_file> ]
+  simplify-debts [ <data_file> ] [ -a | --auto-open ]
   simplify-debts (-h | --help)
 
 Options:
-  -h --help     Show this screen.
+  -h --help        Show this screen.
+  -a --auto-open   Automatically open the graph with the default PDF reader.
 """
 import json
 import sys
@@ -27,6 +28,9 @@ DEFAULT_DATA_FILE = 'debts.json'
 def main():
     args = docopt(__doc__)
     data_file = args['<data_file>']
+    open_file = args['--auto-open']
+
+    print(open_file)
 
     if not data_file:
         print("INFO: using default data file `%s`" % DEFAULT_DATA_FILE)
@@ -43,7 +47,7 @@ def main():
         sys.exit(1)
 
     initial_debt_graph = debt_list_to_graph(debts['debt_list'], debts['names'])
-    draw_graph(initial_debt_graph, 'Initial_Mutual_Debt', open_file=False)
+    draw_graph(initial_debt_graph, 'Initial_Mutual_Debt', open_file=open_file)
     simplified_debt_graph = simplify_debt_graph(initial_debt_graph)
     draw_graph(simplified_debt_graph, 'Simplified_Mutual_Debt')
 
