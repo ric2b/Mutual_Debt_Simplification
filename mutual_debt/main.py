@@ -10,6 +10,8 @@ Options:
 import json
 import sys
 
+from docopt import docopt
+
 from mutual_debt.simplification import debt_list_to_graph, \
     simplify_debt_graph, draw_graph
 
@@ -23,20 +25,12 @@ DEFAULT_DATA_FILE = 'debts.json'
 
 
 def main():
+    args = docopt(__doc__)
+    data_file = args['<data_file>']
 
-    if len(sys.argv) > 2:
-        print(__doc__)
-        sys.exit(1)
-
-    if len(sys.argv) == 1:
+    if not data_file:
         print("INFO: using default data file `%s`" % DEFAULT_DATA_FILE)
         data_file = DEFAULT_DATA_FILE
-    else:
-        if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-            print(__doc__)
-            return
-        else:
-            data_file = sys.argv[1]
 
     # Try to load debts from data file
     # On failure: show error and exit using error code

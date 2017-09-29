@@ -11,7 +11,7 @@ setup(
 
     packages=find_packages(exclude=['*.tests']),
 
-    install_requires=['graphviz==0.8'],
+    install_requires=['graphviz==0.8', 'docopt'],
 
     extras_require={
         'test': ['unittest'],
